@@ -11,7 +11,12 @@
                 <span>Home</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link " href="user-announcements.php" style='background: transparent;'>
+                <i class="bi bi-activity"></i>
+                <span>Announcements</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link " href="userActivities.php" style='background: transparent;'>
@@ -80,8 +85,7 @@
                                 <h5 class="card-title">Total Activites </h5>
 
                                 <div class="d-flex align-items-center">
-                                    <div
-                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-people"></i>
                                     </div>
                                     <div class="ps-3">
@@ -103,8 +107,7 @@
                                 <h5 class="card-title">Total Completed Activites </h5>
 
                                 <div class="d-flex align-items-center">
-                                    <div
-                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-people"></i>
                                     </div>
                                     <div class="ps-3">
@@ -125,8 +128,7 @@
                                 <h5 class="card-title">Announcement</h5>
 
                                 <div class="d-flex align-items-center">
-                                    <div
-                                        class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                                         <i class="bi bi-currency-dollar"></i>
                                     </div>
                                     <div class="ps-3">
@@ -142,6 +144,76 @@
                 </div>
 
 
+                <div class="card mb-4" style="margin: 10px;">
+                    <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
+                        <i class="bi bi-table"></i>
+                        Announcements
+                    </div>
+
+                    <div class="card-header">
+                        <div class="upper-table">
+                            <input type="text" name="searchUser" placeholder="Enter Lastname">
+                        </div>
+                        <!-- <table class="table" style="height: 450px; overflow:auto;"> -->
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Announcement</th>
+                                    <!-- <th>Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                include_once('dbconnect.php');
+                                $conn = getConnection();
+                                $getAnnounceSql = "SELECT * FROM announcements";
+                                $result = mysqli_query($conn, $getAnnounceSql);
+
+                                if (mysqli_num_rows($result) > 0) :
+                                    while ($row = mysqli_fetch_assoc($result)) :
+                                        $datetimeString = $row['created_at'];
+                                        $datetime = new DateTime($datetimeString);
+
+                                        $date = $datetime->format('Y-m-d');
+
+                                        $time12Hour = $datetime->format('h:i A');
+
+
+                                ?>
+                                        <tr>
+
+                                            <td>
+                                                <?php echo $row['id'] ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $date ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $time12Hour ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['text'] ?>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    endwhile;
+                                else :
+                                    echo "0 results";
+                                endif;
+                                ?>
+                                <!-- 
+                                <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
+                                    <strong>No Announcements Added Yet!</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
+                                </div> -->
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="card mb-4" style="margin: 10px;">
                     <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
                         <i class="bi bi-table"></i>
@@ -169,7 +241,14 @@
                             <tbody>
                                 <?php if (!empty($activities)) {
                                     $countActivity = 1;
-                                    foreach ($activities as $activity) { ?>
+                                    foreach ($activities as $activity) {
+                                        $datetimeString = $activity['timeOfActivity'];
+                                        $datetime = new DateTime($datetimeString);
+
+
+                                        $time12Hour = $datetime->format('h:i A');
+
+                                ?>
                                         <tr>
                                             <td>
                                                 <?php echo $countActivity++; ?>
@@ -184,7 +263,7 @@
                                                 <?php echo $activity['dateOfActivity']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $activity['timeOfActivity']; ?>
+                                                <?php echo $time12Hour ?>
                                             </td>
                                             <td>
                                                 <?php echo $activity['ootd']; ?>
@@ -199,11 +278,9 @@
                                         </tr>
                                     <?php }
                                 } else { ?>
-                                    <div class="alert alert-warning alert-dismissable fade show" role="alert"
-                                        style="display:flex;align-items: center; justify-content:space-between;">
+                                    <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
                                         <strong>No Activity Added Yet!</strong>
-                                        <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close"
-                                            style="width: 50px;"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
                                     </div>
 
                                 <?php } ?>
@@ -213,11 +290,11 @@
                 </div>
 
 
-<style>
-    table td{
-        vertical-align: middle;
-    }
-</style>
+                <style>
+                    table td {
+                        vertical-align: middle;
+                    }
+                </style>
 
 
             </div>
@@ -276,8 +353,7 @@
         <form action='register.php' method='POST'>
             <!-- Activity Name -->
             <div class='field input-field'>
-                <input type='text' name='nameActivity' placeholder='Name Activity' class='input'
-                    value='<?php echo $rowActivity[' activityName'] ?>' required>
+                <input type='text' name='nameActivity' placeholder='Name Activity' class='input' value='<?php echo $rowActivity[' activityName'] ?>' required>
             </div>
 
             <!-- Activity Location -->
@@ -400,8 +476,7 @@
                             <td>Carmelites Center</td>
                             <td>09/26/2023</td>
                             <td>8:00AM</td>
-                            <td><img src="assets/img/profile-img.jpg"
-                                    style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
+                            <td><img src="assets/img/profile-img.jpg" style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
                             </td>
                             <td>
                                 <button>Cancel</button>
@@ -415,8 +490,7 @@
                             <td>Carmelites Center</td>
                             <td>09/26/2023</td>
                             <td>8:00AM</td>
-                            <td><img src="assets/img/profile-img.jpg"
-                                    style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
+                            <td><img src="assets/img/profile-img.jpg" style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
                             </td>
                             <td>
                                 <button>Cancel</button>
@@ -430,8 +504,7 @@
                             <td>Carmelites Center</td>
                             <td>09/26/2023</td>
                             <td>8:00AM</td>
-                            <td><img src="assets/img/profile-img.jpg"
-                                    style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
+                            <td><img src="assets/img/profile-img.jpg" style="width: 80px; height:80px; object-fit:cover; border-radius: 5px;" alt="OOTD">
                             </td>
                             <td>
                                 <button>Cancel</button>

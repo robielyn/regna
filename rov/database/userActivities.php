@@ -13,6 +13,12 @@
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
+            <a class="nav-link " href="user-announcements.php" style='background: transparent;'>
+                <i class="bi bi-activity"></i>
+                <span>Announcements</span>
+            </a>
+        </li>   
+        <li class="nav-item">
             <a class="nav-link " href="#">
                 <i class="bi bi-activity"></i>
                 <span>Activities</span>
@@ -80,12 +86,10 @@
                 <div class="card-header" style='padding: 40px 15px'>
                     <div class="container row">
                         <div class="col-6" style=' display:flex;'>
-                            <div class="btns-cont"
-                                style="width: 100%; display:flex; align-items:center; justify-content:center; gap:20px; flex-direction:column; padding:10px 50px">
+                            <div class="btns-cont" style="width: 100%; display:flex; align-items:center; justify-content:center; gap:20px; flex-direction:column; padding:10px 50px">
                                 <button id="addActivityBtn" class='btn btn-primary'><i class="bi bi-plus-circle"></i>Add
                                     Activity</button>
-                                <button id='showActivities' class="btn btn-primary"><i
-                                        class="bi bi-pencil-fill"></i>Edit
+                                <button id='showActivities' class="btn btn-primary"><i class="bi bi-pencil-fill"></i>Edit
                                     Activity</button>
                                 <button id='setBtn' class="btn btn-primary"><i class='bi bi-gear-fill'></i>Set
                                     Activity</button>
@@ -106,15 +110,17 @@
 </main>
 
 <script>
-    $(document).ready(function () {
-        $('.editActivityBtn').click(function () {
+    $(document).ready(function() {
+        $('.editActivityBtn').click(function() {
             act_id = $(this).attr('id')
             // alert(act_id);
             $.ajax({
                 url: "select.php",
                 method: 'post',
-                data: { update_id: act_id },
-                success: function (result) {
+                data: {
+                    update_id: act_id
+                },
+                success: function(result) {
                     $('#editModal').html(result);
                 }
             });
@@ -123,7 +129,7 @@
             $('#editModal').show();
         })
         // For Delete Activity
-        $('.deleteBtn').click(function () {
+        $('.deleteBtn').click(function() {
             const act_id = $(this).attr('id')
             // alert(act_id)
             confirmDeleteModal(act_id);
@@ -131,13 +137,15 @@
 
 
         // For Set Remarks
-        $('.setRemarks').click(function () {
+        $('.setRemarks').click(function() {
             act_id = $(this).attr('id');
             $.ajax({
                 url: "select.php",
                 method: 'post',
-                data: { set_act: act_id },
-                success: function (result) {
+                data: {
+                    set_act: act_id
+                },
+                success: function(result) {
                     $('#addRemarksModal').html(result);
                     $('#addRemarksModal').show();
                 }
@@ -151,7 +159,7 @@
     function confirmDeleteModal(actId) {
         $("#deleteModal .modal-body").text("Are you sure you want to delete Activity ");
 
-        $("#confirmDelete").off("click").on("click", function () {
+        $("#confirmDelete").off("click").on("click", function() {
             console.log("Deleting item ID: " + actId);
             deleteActivity(actId);
         });
@@ -161,15 +169,15 @@
         $.ajax({
             url: "select.php",
             method: 'post',
-            data: { delete_id: actId },
-            success: function (result) {
+            data: {
+                delete_id: actId
+            },
+            success: function(result) {
                 $('#deleteModal').html(result);
                 location.reload();
             }
         });
     }
-
-
 </script>
 
 
@@ -241,7 +249,7 @@
                 Are you sure you want to delete this item?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
             </div>
         </div>
@@ -293,27 +301,23 @@
 
                                     <td>
                                         <?php echo $activity['ootd']; ?>
-                                   
+
                                     </td>
 
                                     <td>
 
-                                        <button class="editActivityBtn btn btn-primary"
-                                            id="<?php echo $activity['id'] ?>" style='background: #198754;'>Edit</button>
+                                        <button class="editActivityBtn btn btn-primary" id="<?php echo $activity['id'] ?>" style='background: #198754;'>Edit</button>
 
-                                        <button id="<?php echo $activity['id'] ?>" class="deleteBtn btn btn-danger"
-                                            data-bs-toggle="modal" data-bs-target="#deleteModal" style='background: #198754;'>Delete</button>
+                                        <button id="<?php echo $activity['id'] ?>" class="deleteBtn btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" style='background: #198754;'>Delete</button>
                                     </td>
 
 
                                 </tr>
                             <?php }
                         } else { ?>
-                            <div class="alert alert-warning alert-dismissable fade show" role="alert"
-                                style="display:flex;align-items: center; justify-content:space-between;">
+                            <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
                                 <strong>No Activity Added Yet!</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close"
-                                    style="width: 50px;"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
                             </div>
 
                         <?php } ?>
@@ -376,7 +380,7 @@
                                     </td>
                                     <td>
                                         <?php echo $activity['ootd']; ?>
-                             
+
                                     </td>
                                     <td>
                                         <p>
@@ -384,19 +388,16 @@
                                         </p>
                                     </td>
                                     <td>
-                                        <button class="setRemarks btn btn-primary"
-                                            id="<?php echo $activity['id'] ?>" style='background: #198754;'>Add Remark</button>
+                                        <button class="setRemarks btn btn-primary" id="<?php echo $activity['id'] ?>" style='background: #198754;'>Add Remark</button>
                                     </td>
 
 
                                 </tr>
                             <?php }
                         } else { ?>
-                            <div class="alert alert-warning alert-dismissable fade show" role="alert"
-                                style="display:flex;align-items: center; justify-content:space-between;">
+                            <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
                                 <strong>No Activity Added Yet!</strong>
-                                <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close"
-                                    style="width: 50px;"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
                             </div>
 
                         <?php } ?>

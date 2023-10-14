@@ -1,4 +1,4 @@
-<?php include_once('admin-header.php') ?>
+<?php include_once('user-header.php') ?>
 
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
@@ -6,12 +6,17 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="user.php">
+            <a class="nav-link " href="user.php" style='background: transparent;'>
                 <i class="bi bi-grid"></i>
                 <span>Home</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link " href="user-announcements.php">
+                <i class="bi bi-activity"></i>
+                <span>Announcements</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link " href="userActivities.php" style='background: transparent;'>
@@ -53,11 +58,11 @@
 <main id="main" class="main" style='margin-top:60px;'>
 
     <div class="pagetitle">
-        <h1>Dashboard</h1>
+        <h1>Announcements</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="user.php">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
+                <li class="breadcrumb-item active">Announcements</li>
             </ol>
         </nav>
     </div>
@@ -68,198 +73,88 @@
 
             <!-- Left side columns -->
             <div class="col-lg-12">
-                <div class="row">
 
 
-                    <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
-
-
-                            <div class="card-body">
-                                <form action="announcement.php" method="POST">
-                                    <div class="col-xxl-4 col-md-4" style=" padding: 20px; border-radius: 10px; width:100%">
-
-                                        <h5 class="card-title" style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">Announcement</h5>
-
-                                        <textarea id="announcementText" name="announcementText" rows="4" cols="50" placeholder="Write your announcement here..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px;"></textarea>
-
-                                        <button id="submitAnnouncement" type="submit" class="btn btn-primary" style="margin-top: 10px;">Submit</button>
-
-                                    </div>
-                                </form>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- USER Card -->
-                    <div class="col-xxl-4 col-xl-4">
-
-                        <div class="card info-card customers-card">
-
-                            <div class="card-body">
-                                <h5 class="card-title">Total Activites </h5>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-people"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>1244</h6>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
+                <div class="card mb-4" style="margin: 10px;">
+                    <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
+                        <i class="bi bi-table"></i>
+                        Announcements
                     </div>
 
-                    <!-- Sales Card -->
-                    <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
-
-
-                            <div class="card-body">
-                                <h5 class="card-title">Total Completed Activites </h5>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-people"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>145</h6>
-
-                                    </div>
-                                </div>
-                            </div>
-
+                    <div class="card-header">
+                        <div class="upper-table">
+                            <input type="text" name="searchUser" placeholder="Enter Lastname">
                         </div>
+                        <!-- <table class="table" style="height: 450px; overflow:auto;"> -->
+                        <table class="table text-center">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Announcement</th>
+                                    <!-- <th>Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                include_once('dbconnect.php');
+                                $conn = getConnection();
+                                $getAnnounceSql = "SELECT * FROM announcements";
+                                $result = mysqli_query($conn, $getAnnounceSql);
+
+                                if (mysqli_num_rows($result) > 0) :
+                                    while ($row = mysqli_fetch_assoc($result)) :
+                                        $datetimeString = $row['created_at'];
+                                        $datetime = new DateTime($datetimeString);
+
+                                        $date = $datetime->format('Y-m-d');
+
+                                        $time12Hour = $datetime->format('h:i A');
+
+
+                                ?>
+                                        <tr>
+
+                                            <td>
+                                                <?php echo $row['id'] ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $date ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $time12Hour ?>
+                                            </td>
+                                            <td>
+                                                <?php echo $row['text'] ?>
+                                            </td>
+                                        </tr>
+                                <?php
+                                    endwhile;
+                                else :
+                                    echo "0 results";
+                                endif;
+                                ?>
+                                <!-- 
+                                <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
+                                    <strong>No Announcements Added Yet!</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
+                                </div> -->
+
+                            </tbody>
+                        </table>
                     </div>
-
-
-
-
-
-                    <?php
-                    $sql1 = "SELECT count(*) male FROM users WHERE gender='Male' AND role='user'";
-                    $sql2 = "SELECT count(*) as female FROM users WHERE gender='Female' AND role ='user'";
-                    $sql3 = "SELECT count(*) as other FROM users WHERE gender='other' AND role ='user'";
-
-                    $result1 = mysqli_query($con, $sql1);
-                    $result2 = mysqli_query($con, $sql2);
-                    $result3 = mysqli_query($con, $sql3);
-
-                    $row1 = mysqli_fetch_assoc($result1);
-                    $row2 = mysqli_fetch_assoc($result2);
-                    $row3 = mysqli_fetch_assoc($result3);
-                    ?>
-                    <canvas id="myChart" style="width:100%;max-width:600px;"></canvas>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-                    </script>
-
-                    <script>
-                        var xValues = ["Male", "Female", "Other"];
-                        var yValues = [<?php echo $row1['male'] ?>, <?php echo $row2['female'] ?>, <?php echo $row3['other'] ?>];
-                        var barColors = [
-                            "#b91d47",
-                            "#00aba9",
-                            "#2b5797"
-                        ];
-                        new Chart("myChart", {
-                            type: "pie",
-                            data: {
-                                labels: xValues,
-                                datasets: [{
-                                    backgroundColor: barColors,
-                                    data: yValues
-                                }]
-                            },
-                            options: {
-                                title: {
-                                    display: true,
-                                    text: "World Wide Wine Production 2018"
-                                }
-                            }
-                        });
-                    </script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
-                    </script>
-                    <div class="card mb-4" style="margin: 10px;">
-                        <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
-                            <i class="bi bi-table"></i>
-                            List Of Activities
-                        </div>
-
-                        <div class="card-header">
-                            <div class="upper-table">
-                                <input type="text" name="searchUser" placeholder="Enter Lastname">
-                            </div>
-                            <!-- <table class="table" style="height: 450px; overflow:auto;"> -->
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Activity Name</th>
-                                        <th>Location</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>OOTD</th>
-                                        <th>Remarks</th>
-                                        <!-- <th>Action</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($activities)) {
-                                        $countActivity = 1;
-                                        foreach ($activities as $activity) { ?>
-                                            <tr>
-                                                <td>
-                                                    <?php echo $countActivity++; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['activityName']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['location']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['dateOfActivity']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['timeOfActivity']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['ootd']; ?>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        <?php echo $activity['remarks'] ?>
-                                                    </p>
-                                                </td>
-
-
-                                            </tr>
-                                        <?php }
-                                    } else { ?>
-                                        <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
-                                            <strong>No Activity Added Yet!</strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
-                                        </div>
-
-                                    <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-
-                    <style>
-                        table td {
-                            vertical-align: middle;
-                        }
-                    </style>
-
-
                 </div>
+
+
+                <style>
+                    table td {
+                        vertical-align: middle;
+                    }
+                </style>
+
+
+            </div>
     </section>
 
 </main>
@@ -483,4 +378,4 @@
 </div>
 
 
-<?php include_once('admin-footer.php') ?>
+<?php include_once('user-footer.php') ?>
