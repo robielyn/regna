@@ -186,6 +186,66 @@
                     <div class="card mb-4" style="margin: 10px;">
                         <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
                             <i class="bi bi-table"></i>
+                            <?php 
+                             $sql = "SELECT * FROM users";
+                             $result = $con->query($sql);
+                            ?>
+
+<div class="col-lg-12">
+    <div class="table-responsive">
+        <table id="second-morris-table" class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = $result->fetch_assoc()) { ?>
+                <tr>
+                    <td><?php echo $row['id']; ?></td>
+                    <td><?php echo $row['firstname']; ?></td>
+                    <td><?php echo $row['lastname']; ?></td>
+                    <td><?php echo $row['gender']; ?></td>
+                    <td><?php echo $row['address']; ?></td>
+                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['role']; ?></td>
+                    <td><?php echo $row['status']; ?></td>
+                    <td>
+                        <button class="edit-button" data-id="<?php echo $row['id']; ?>">Edit</button>
+                    </td>
+                </tr>
+                <?php } ?>
+                <!-- Add more rows here with corresponding data -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // JavaScript to handle the "Edit" button click event
+    const editButtons = document.querySelectorAll(".edit-button");
+    editButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const userId = this.getAttribute("data-id");
+            // Redirect to the edit_user.php page with the user's ID
+            window.location.href = `edit_user.php?id=${userId}`;
+        });
+    });
+</script>
+
+
+<div>
+    
+
+
                             List Of Activities
                         </div>
 
@@ -244,7 +304,6 @@
                                             <strong>No Activity Added Yet!</strong>
                                             <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
                                         </div>
-
                                     <?php } ?>
                                 </tbody>
                             </table>
