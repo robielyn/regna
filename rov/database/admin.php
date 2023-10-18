@@ -91,47 +91,56 @@
 
                         </div>
                     </div>
-                    <!-- USER Card -->
-                    <div class="col-xxl-4 col-xl-4">
-
-                        <div class="card info-card customers-card">
-
+                    <div class="col-lg-6">
+                        <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">Total Activites </h5>
+                                <h5 class="card-title">Bar CHart</h5>
 
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-people"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>1244</h6>
-                                    </div>
-                                </div>
+                                <!-- Bar Chart -->
+                                <canvas id="barChart" style="max-height: 400px; display: block; box-sizing: border-box; height: 260px; width: 520px;" width="520" height="260"></canvas>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        new Chart(document.querySelector('#barChart'), {
+                                            type: 'bar',
+                                            data: {
+                                                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'],
+                                                datasets: [{
+                                                    label: 'Bar Chart',
+                                                    data: [65, 59, 80, 81, 56, 55, 40],
+                                                    backgroundColor: [
+                                                        'rgba(255, 99, 132, 0.2)',
+                                                        'rgba(255, 159, 64, 0.2)',
+                                                        'rgba(255, 205, 86, 0.2)',
+                                                        'rgba(75, 192, 192, 0.2)',
+                                                        'rgba(54, 162, 235, 0.2)',
+                                                        'rgba(153, 102, 255, 0.2)',
+                                                        'rgba(201, 203, 207, 0.2)'
+                                                    ],
+                                                    borderColor: [
+                                                        'rgb(255, 99, 132)',
+                                                        'rgb(255, 159, 64)',
+                                                        'rgb(255, 205, 86)',
+                                                        'rgb(75, 192, 192)',
+                                                        'rgb(54, 162, 235)',
+                                                        'rgb(153, 102, 255)',
+                                                        'rgb(201, 203, 207)'
+                                                    ],
+                                                    borderWidth: 1
+                                                }]
+                                            },
+                                            options: {
+                                                scales: {
+                                                    y: {
+                                                        beginAtZero: true
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    });
+                                </script>
+                                <!-- End Bar CHart -->
 
                             </div>
-                        </div>
-
-                    </div>
-
-                    <!-- Sales Card -->
-                    <div class="col-xxl-4 col-md-4">
-                        <div class="card info-card sales-card">
-
-
-                            <div class="card-body">
-                                <h5 class="card-title">Total Completed Activites </h5>
-
-                                <div class="d-flex align-items-center">
-                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                        <i class="bi bi-people"></i>
-                                    </div>
-                                    <div class="ps-3">
-                                        <h6>145</h6>
-
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
 
@@ -186,139 +195,144 @@
                     <div class="card mb-4" style="margin: 10px;">
                         <div class="card-header" style='font-size: 18px; color:black; font-weight: 600; margin-bottom: 0;'>
                             <i class="bi bi-table"></i>
-                            <?php 
-                             $sql = "SELECT * FROM users";
-                             $result = $con->query($sql);
+                            <?php
+                            $sql = "SELECT * FROM users";
+                            $result = $con->query($sql);
                             ?>
 
-<div class="col-lg-12">
-    <div class="table-responsive">
-        <table id="second-morris-table" class="table table-bordered table-hover table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Gender</th>
-                    <th>Address</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $result->fetch_assoc()) { ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo $row['firstname']; ?></td>
-                    <td><?php echo $row['lastname']; ?></td>
-                    <td><?php echo $row['gender']; ?></td>
-                    <td><?php echo $row['address']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
-                    <td><?php echo $row['role']; ?></td>
-                    <td><?php echo $row['status']; ?></td>
-                    <td>
-                        <button class="edit-button" data-id="<?php echo $row['id']; ?>">Edit</button>
-                    </td>
-                </tr>
-                <?php } ?>
-                <!-- Add more rows here with corresponding data -->
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<script>
-    // JavaScript to handle the "Edit" button click event
-    const editButtons = document.querySelectorAll(".edit-button");
-    editButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            const userId = this.getAttribute("data-id");
-            // Redirect to the edit_user.php page with the user's ID
-            window.location.href = `edit_user.php?id=${userId}`;
-        });
-    });
-</script>
-
-
-<div>
-    
-
-
-                            List Of Activities
-                        </div>
-
-                        <div class="card-header">
-                            <div class="upper-table">
-                                <input type="text" name="searchUser" placeholder="Enter Lastname">
-                            </div>
-                            <!-- <table class="table" style="height: 450px; overflow:auto;"> -->
-                            <table class="table text-center">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Activity Name</th>
-                                        <th>Location</th>
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>OOTD</th>
-                                        <th>Remarks</th>
-                                        <!-- <th>Action</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (!empty($activities)) {
-                                        $countActivity = 1;
-                                        foreach ($activities as $activity) { ?>
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <table id="second-morris-table" class="table table-bordered table-hover table-striped">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <?php echo $countActivity++; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['activityName']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['location']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['dateOfActivity']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['timeOfActivity']; ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo $activity['ootd']; ?>
-                                                </td>
-                                                <td>
-                                                    <p>
-                                                        <?php echo $activity['remarks'] ?>
-                                                    </p>
-                                                </td>
-
-
+                                                <th>ID</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Gender</th>
+                                                <th>Address</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
                                             </tr>
-                                        <?php }
-                                    } else { ?>
-                                        <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
-                                            <strong>No Activity Added Yet!</strong>
-                                            <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
-                                        </div>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            <?php while ($row = $result->fetch_assoc()) { ?>
+                                                <tr>
+                                                    <td><?php echo $row['id']; ?></td>
+                                                    <td><?php echo $row['firstname']; ?></td>
+                                                    <td><?php echo $row['lastname']; ?></td>
+                                                    <td><?php echo $row['gender']; ?></td>
+                                                    <td><?php echo $row['address']; ?></td>
+                                                    <td><?php echo $row['email']; ?></td>
+                                                    <td><?php echo $row['role']; ?></td>
+                                                    <td><?php echo $row['status']; ?></td>
+                                                    <td>
+                                                        <button class="edit-button" data-id="<?php echo $row['id']; ?>">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+                                            <!-- Add more rows here with corresponding data -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <script>
+                                // JavaScript to handle the "Edit" button click event
+                                const editButtons = document.querySelectorAll(".edit-button");
+                                editButtons.forEach(button => {
+                                    button.addEventListener("click", function() {
+                                        const userId = this.getAttribute("data-id");
+                                        // Redirect to the edit_user.php page with the user's ID
+                                        window.location.href = `edit_user.php?id=${userId}`;
+                                    });
+                                });
+                            </script>
+
+
+                            <div>
+
+
+
+                                List Of Activities
+                            </div>
+
+                            <div class="card-header">
+                                <div class="upper-table">
+                                    <input type="text" name="searchUser" placeholder="Enter Lastname">
+                                </div>
+                                <!-- <table class="table" style="height: 450px; overflow:auto;"> -->
+                                <table class="table text-center">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Activity Name</th>
+                                            <th>Location</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>OOTD</th>
+                                            <th>Remarks</th>
+                                            <!-- <th>Action</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php if (!empty($activities)) {
+                                            $countActivity = 1;
+                                            foreach ($activities as $activity) { ?>
+                                                <tr>
+                                                    <td>
+                                                        <?php echo $countActivity++; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['firstname'] . " " . $activity['lastname'] ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['activityName']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['location']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['dateOfActivity']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['timeOfActivity']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $activity['ootd']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <p>
+                                                            <?php echo $activity['remarks'] ?>
+                                                        </p>
+                                                    </td>
+
+
+                                                </tr>
+                                            <?php }
+                                        } else { ?>
+                                            <div class="alert alert-warning alert-dismissable fade show" role="alert" style="display:flex;align-items: center; justify-content:space-between;">
+                                                <strong>No Activity Added Yet!</strong>
+                                                <button type="button" class="btn-close" data-bs-dismiss='alert' aria-label="close" style="width: 50px;"></button>
+                                            </div>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
+
+
+                        <style>
+                            table td {
+                                vertical-align: middle;
+                            }
+                        </style>
+
+
                     </div>
-
-
-                    <style>
-                        table td {
-                            vertical-align: middle;
-                        }
-                    </style>
-
-
-                </div>
     </section>
 
 </main>

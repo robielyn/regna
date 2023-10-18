@@ -102,7 +102,8 @@ $row = $result->fetch_assoc();
 
 
 // Show Activity
-$sqlActivity = "SELECT * FROM activities WHERE userId = '" . $_SESSION['ID'] . "'";
+$sqlActivity = "SELECT * FROM activities INNER JOIN users ON activities.userID = users.id";
+// $sqlActivity = "SELECT * FROM activities WHERE userId = '" . $_SESSION['ID'] . "'";
 $resultActivity = $con->query($sqlActivity);
 
 // Fetch all activity rows into an array
@@ -185,12 +186,12 @@ while ($rowData = $resultActivity->fetch_assoc()) {
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
-        <div class="search-bar">
+        <!-- <div class="search-bar">
             <form class="search-form d-flex align-items-center" method="POST" action="#">
                 <input type="text" name="query" placeholder="Search" title="Enter search keyword">
                 <button type="submit" title="Search"><i class="bi bi-search"></i></button>
             </form>
-        </div><!-- End Search Bar -->
+        </div>End Search Bar -->
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
